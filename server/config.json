@@ -1,4 +1,4 @@
-const config = {
+{
     "database": {
         "host": "localhost",
         "user": "root",
@@ -6,5 +6,3 @@ const config = {
         "database": "cinema"
     }
 }
-
-module.exports = config;
