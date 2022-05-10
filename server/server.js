@@ -29,7 +29,6 @@ startList = [pathNameFeedback, bodyparser.json(), bodyparser.urlencoded({extende
 
 app.use(startList, cors());
 
-
 // ---- Routing ----
 app.use("/movie", movieRoutes);
 app.use("/screening", screeningRoutes);
