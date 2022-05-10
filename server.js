@@ -21,7 +21,7 @@ db.connect();
 function pathNameFeedback(req, res, next) {
     pathName = req._parsedUrl.pathname;
     console.log("----- New Request -----");
-    console.log(`Pathname: ${pathName}`);
+    console.log(`Pathname: ${pathName}`);   
     next();
 }
 
@@ -35,6 +35,8 @@ function bodyFeedback(req, res, next) {
 startList = [pathNameFeedback, bodyparser.json(), bodyparser.urlencoded({extended: true}), bodyFeedback];
 
 app.use(startList, cors());
+
+// End points go here
 
 
 
