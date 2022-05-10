@@ -1,62 +1,61 @@
 const express = require("express");
 const mysql = require("mysql");
+const config = require("../config.js");
 
 const router = express.Router();
+const db = mysql.createConnection(config.database);
+db.connect();
 
-const db = mysql.createConnection(
-    {
-        host:"localhost",
-        user:"root",
-        password:"root",
-        database:"cinema"
-    }
-);
+// --- Functions --- 
 
-function addBooking(req, res) {
+function create(req, res) {
     let sqlQuery = `INSERT INTO booking(fullname, email, no_adult, no_child, no_concession) VALUES ('${req.body.fullname}', '${req.body.email}', ${req.body.no_adult}, ${req.body.no_child}, ${req.body.no_concession});`;
     db.query(sqlQuery, (err, results) => {
         // console.log(results);
+        // console.log(err);
     });
     res.end();
 }
 
-function readBookings(req, res) {
+function readAll(req, res) {
     let sqlQuery = "SELECT * FROM booking;";
     db.query(sqlQuery, (err, results) => {
         // console.log(results);
+        // console.log(err);
         res.json(results);
     });
 }
 
-function updateBooking(req, res) {
+function update(req, res) {
     let sqlQuery = `UPDATE booking SET fullname = '${req.body.fullname}', email = '${req.body.email}', no_adult = ${req.body.no_adult}, no_child = ${req.body.no_child}, no_concession = ${req.body.no_concession} WHERE id = ${req.params.id};`;
     db.query(sqlQuery, (err, results) => {
         // console.log(results);
+        // console.log(err);
     });
     res.end();
 }
 
-function deleteBooking(req, res) {
+function deleteB(req, res) {
     let sqlQuery = `DELETE FROM booking WHERE id = ${req.params.id}`;
     db.query(sqlQuery, (err, results) => {
         // console.log(results);
+        // console.log(err);
     });
     res.end();
 }
 
-//default
-router.get("", readBookings);
+// --- End Points ---
 
 // Create
-router.post("/create", addBooking);
+router.post("/create", create);
 
 // Read
-router.get("/read", readBookings);
+router.get("/read", readAll);
 
 // Update
-router.put("/update/:id", updateBooking);
+router.put("/update/:id", update);
 
 // Delete
-router.delete("/delete/:id", deleteBooking);
+router.delete("/delete/:id", deleteB);
 
 module.exports = router;

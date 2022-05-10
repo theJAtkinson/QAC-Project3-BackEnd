@@ -1,7 +1,7 @@
 -- Cimema Schema --
 
 /* Running full Schema will drop the previous database and then populate it with some data.
-If you want to create an empty database only run until line 59.
+If you want to create an empty database only run until line 60.
 */
 DROP DATABASE IF EXISTS cinema;
 CREATE DATABASE IF NOT EXISTS cinema;
