@@ -85,7 +85,7 @@ function readPosts(req, res) {
 }
 
 function updatePost(req, res) {
-    let sqlQuery = `UPDATE booking SET movie_id = ${req.body.movie_id}, title = '${req.body.title}', body = '${req.body.body}', rating = ${req.body.rating}, fullname = '${req.body.fullname}', WHERE id = ${req.body.id};`;
+    let sqlQuery = `UPDATE post SET movie_id = ${req.body.movie_id}, title = '${req.body.title}', body = '${req.body.body}', rating = ${req.body.rating}, fullname = '${req.body.fullname}', WHERE id = ${req.body.id};`;
     db.query(sqlQuery, (err, results) => {
         // console.log(results);
     });
@@ -93,7 +93,40 @@ function updatePost(req, res) {
 }
 
 function deletePost(req, res) {
-    let sqlQuery = `DELETE FROM booking WHERE id = ${req.body.id}`;
+    let sqlQuery = `DELETE FROM post WHERE id = ${req.body.id}`;
+    db.query(sqlQuery, (err, results) => {
+        // console.log(results);
+    });
+    res.end();
+}
+
+// --- Emails ---
+function addEmail(req, res) {
+    let sqlQuery = `INSERT INTO email_form(fullname, title, body, email) VALUES ('${req.body.fullname}', '${req.body.title}', '${req.body.body}', '${req.body.email}');`;
+    db.query(sqlQuery, (err, results) => {
+        // console.log(results);
+    });
+    res.end();
+}
+
+function readEmails(req, res) {
+    let sqlQuery = "SELECT * FROM email_form;";
+    db.query(sqlQuery, (err, results) => {
+        // console.log(results);
+        res.json(results);
+    });
+}
+
+function updateEmail(req, res) {
+    let sqlQuery = `UPDATE email_form SET fullname = '${req.body.fullname}' title = '${req.body.title}', body = '${req.body.body}', email = '${req.body.email}', WHERE id = ${req.body.id};`;
+    db.query(sqlQuery, (err, results) => {
+        // console.log(results);
+    });
+    res.end();
+}
+
+function deleteEmail(req, res) {
+    let sqlQuery = `DELETE FROM email_form WHERE id = ${req.body.id}`;
     db.query(sqlQuery, (err, results) => {
         // console.log(results);
     });
@@ -104,11 +137,10 @@ startList = [pathNameFeedback, bodyparser.json(), bodyparser.urlencoded({extende
 
 app.use(startList, cors());
 
-// End points go here
+// ---- End points ----
 
 
-
-// --- Bookings ---
+// -- Bookings --
 // Create
 app.post("/booking/create", addBooking);
 
@@ -121,7 +153,8 @@ app.put("/booking/update", updateBooking);
 // Delete
 app.delete("/booking/delete", deleteBooking);
 
-// --- Posts ---
+
+// -- Posts --
 // Create
 app.post("/post/create", addPost);
 
@@ -134,6 +167,19 @@ app.put("/post/update", updatePost);
 // Delete
 app.delete("/post/delete", deletePost);
 
+
+// -- Emails --
+// Create
+app.post("/email/create", addEmail);
+
+// Read
+app.get("/email/read", readEmails);
+
+// Update
+app.put("/email/update", updateEmail);
+
+// Delete
+app.delete("/email/delete", deleteEmail);
 
 
 app.listen(4005);
