@@ -1,9 +1,9 @@
 const express = require("express");
 const mysql = require("mysql");
-const config = require("../config.js");
+const {database} = require("../config.json");
 
 const router = express.Router();
-const db = mysql.createConnection(config.database);
+const db = mysql.createConnection(database);
 db.connect();
 
 // --- Functions ---
