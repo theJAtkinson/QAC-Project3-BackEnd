@@ -35,7 +35,7 @@ function update(req, res) {
     res.end();
 }
 
-function deleteE(req, res) {
+function del(req, res) {
     let sqlQuery = `DELETE FROM email_form WHERE id = ${req.params.id}`;
     db.query(sqlQuery, (err, results) => {
         // console.log(results);
@@ -56,6 +56,6 @@ router.get("/read", readAll);
 router.put("/update/:id", update);
 
 // Delete
-router.delete("/delete/:id", deleteE);
+router.delete("/delete/:id", del);
 
 module.exports = router;

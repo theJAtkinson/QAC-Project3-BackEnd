@@ -52,7 +52,7 @@ function update({body, params}, res) {
     res.end();
 }
 
-function deleteB(req, res) {
+function del(req, res) {
     let sqlQuery = `DELETE FROM booking WHERE id = ${req.params.id}`;
     db.query(sqlQuery, (err, results) => {
         // console.log(results);
@@ -73,6 +73,6 @@ router.get("/read", readAll);
 router.put("/update/:id", update);
 
 // Delete
-router.delete("/delete/:id", deleteB);
+router.delete("/delete/:id", del);
 
 module.exports = router;

@@ -8,7 +8,7 @@ const db = mysql.createConnection(database);
 db.connect();
 
 // --- Functions --- 
-router.post("/movies/create",function(req,res,next){
+function create(req,res,next){
     let sqlQuery = `INSERT INTO movie (movie_name, director, actors, img, classification) 
                     VALUES ('${req.body.movie_name}', '${req.body.director}', '${req.body.actors}',
                     '${req.body.img}', '${req.body.classification}');`;
@@ -16,17 +16,17 @@ router.post("/movies/create",function(req,res,next){
         console.log(results);
     });
     res.end();
-})
+}
 
-router.get("/movies/readAll",function(req,res,next){
+function readAll(req,res,next){
     let sqlQuery = `SELECT * FROM movie`
     db.query(sqlQuery, (err, results) => {
         console.log(results);
         res.json(results);
     });
-})
+}
 
-router.put("/movies/update/:id",function(req,res,next){
+function update(req,res,next){
     let sqlQuery = `UPDATE movie SET movie_name = '${req.body.movie_name}', director = '${req.body.director}', actors = '${req.body.actors}', img = '${req.body.img}', classification = '${req.body.classification}' WHERE id = ${req.params.id}; `;
 
     db.query(sqlQuery, (err, results) => {
@@ -34,15 +34,15 @@ router.put("/movies/update/:id",function(req,res,next){
         console.log(err);
     });
     res.end();
-})
+}
 
-router.get("/movies/delete/:id",function(req,res,next){
+function del(req,res,next){
     let sqlQuery = `DELETE from movie WHERE id = ${req.params.id}`
     db.query(sqlQuery, (err,results) => {
         console.log(results);
     });
     res.end();
-})
+}
 
 // --- End Points ---
 
@@ -56,5 +56,6 @@ router.get("/read", readAll);
 router.put("/update/:id", update);
 
 // Delete
-router.delete("/delete/:id", deleteM);
+router.delete("/delete/:id", del);
+
 module.exports = router;
