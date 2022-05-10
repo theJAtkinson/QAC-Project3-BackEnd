@@ -12,9 +12,11 @@ function create({body}, res, next) {
     if (!body) {
         return res.status(400).send("Missing request body");
     }
-    let sqlQuery = `INSERT INTO booking(fullname, email, no_adult, no_child, no_concession) VALUES ('${body.fullname}', '${body.email}', ${body.no_adult}, ${body.no_child}, ${body.no_concession});`;
 
-    db.query(sqlQuery, (err, results) => {
+    let sqlQuery = `INSERT INTO booking(fullname, email, no_adult, no_child, no_concession) VALUES ('?', '?', ?, ?, ?);`;
+    let create = [body.fullname, body.email, body.no_adult, body.no_child, body.no_concession];
+
+    db.query(sqlQuery, create, (err, results) => {
         // console.log(results);
         // console.log(err);
         if (!err) {
@@ -34,12 +36,15 @@ function readAll(req, res) {
     });
 }
 
-function update(req, res) {
-    const id = req.params.id;
+function update({body, params}, res) {
+    const id = params.id;
     if (!id) {
         return res.status(400).send(`No booking found with id ${id}`);
     }
-    let sqlQuery = `UPDATE booking SET fullname = '${req.body.fullname}', email = '${req.body.email}', no_adult = ${req.body.no_adult}, no_child = ${req.body.no_child}, no_concession = ${req.body.no_concession} WHERE id = ${id};`;
+
+    let sqlQuery = `UPDATE booking SET fullname = '?', email = '?', no_adult = ?, no_child = ?, no_concession = ? WHERE id = ?;`;
+    let update = [body.fullname, body.email, body.no_adult, body.no_child, body.no_concession, id];
+
     db.query(sqlQuery, (err, results) => {
         // console.log(results);
         // console.log(err);

@@ -56,5 +56,5 @@ router.get("/read", readAll);
 router.put("/update/:id", update);
 
 // Delete
-router.delete("/delete/:id", deleteE);
+router.delete("/delete/:id", deleteM);
 module.exports = router;
