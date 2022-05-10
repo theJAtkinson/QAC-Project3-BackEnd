@@ -1,8 +1,6 @@
 const express = require("express");
 const bodyparser = require("body-parser");
 const cors = require("cors");
-
-// routes
 const movieRoutes = require('./routes/movie.js');
 const screeningRoutes = require('./routes/movie.js');
 const bookingRoutes = require("./routes/booking.js");
@@ -11,7 +9,6 @@ const emailRoutes = require('./routes/email.js');
 
 let app = express();
 
-// --- Midware functions ---
 // - Terminal Loggers -
 // Pathname feedback
 function pathNameFeedback(req, res, next) {
@@ -32,23 +29,15 @@ startList = [pathNameFeedback, bodyparser.json(), bodyparser.urlencoded({extende
 
 app.use(startList, cors());
 
+
 // ---- Routing ----
-
-// -- Movies --
 app.use("/movie", movieRoutes);
-
-// -- Screening --
 app.use("/screening", screeningRoutes);
-
-// -- Bookings --
 app.use("/booking", bookingRoutes);
-
-// -- Posts --
 app.use("/post", postRoutes);
-
-// -- Emails --
 app.use("/email", emailRoutes);
 
+app.use((req, res) => res.sendStatus(404));
 
 app.listen(4005, () => {
     console.log("-- Server Listening ---");

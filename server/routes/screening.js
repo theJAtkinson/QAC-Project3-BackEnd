@@ -1,6 +1,6 @@
 const express = require("express");
 const mysql = require("mysql");
-const config = require("../config.js");
+const config= require("../config.js");
 
 
 const router = express.Router();

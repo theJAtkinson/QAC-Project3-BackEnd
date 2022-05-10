@@ -1,18 +1,14 @@
 const express = require("express");
 const mysql = require("mysql");
+const config = require("../config.js");
 
 const router = express.Router();
-const db = mysql.createConnection(
-    {
-        host:"localhost",
-        user:"root",
-        password:"root",
-        database:"cinema"
-    }
-);
+const db = mysql.createConnection(config.database);
+db.connect();
 
+// --- Functions --- 
 
-function addEmail(req, res) {
+function create(req, res) {
     let sqlQuery = `INSERT INTO email_form(fullname, title, body, email) VALUES ('${req.body.fullname}', '${req.body.title}', '${req.body.body}', '${req.body.email}');`;
     db.query(sqlQuery, (err, results) => {
         // console.log(results);
@@ -21,7 +17,7 @@ function addEmail(req, res) {
     res.end();
 }
 
-function readEmails(req, res) {
+function readAll(req, res) {
     let sqlQuery = "SELECT * FROM email_form;";
     db.query(sqlQuery, (err, results) => {
         // console.log(results);
@@ -30,7 +26,7 @@ function readEmails(req, res) {
     });
 }
 
-function updateEmail(req, res) {
+function update(req, res) {
     let sqlQuery = `UPDATE email_form SET fullname = '${req.body.fullname}', title = '${req.body.title}', body = '${req.body.body}', email = '${req.body.email}' WHERE id = ${req.params.id};`;
     db.query(sqlQuery, (err, results) => {
         // console.log(results);
@@ -39,7 +35,7 @@ function updateEmail(req, res) {
     res.end();
 }
 
-function deleteEmail(req, res) {
+function deleteE(req, res) {
     let sqlQuery = `DELETE FROM email_form WHERE id = ${req.params.id}`;
     db.query(sqlQuery, (err, results) => {
         // console.log(results);
@@ -48,21 +44,18 @@ function deleteEmail(req, res) {
     res.end();
 }
 
-// end points
-
-//default
-router.get("", readEmails);
+// --- End Points ---
 
 // Create
-router.post("/create", addEmail);
+router.post("/create", create);
 
 // Read
-router.get("/read", readEmails);
+router.get("/read", readAll);
 
 // Update
-router.put("/update/:id", updateEmail);
+router.put("/update/:id", update);
 
 // Delete
-router.delete("/delete/:id", deleteEmail);
+router.delete("/delete/:id", deleteE);
 
 module.exports = router;
