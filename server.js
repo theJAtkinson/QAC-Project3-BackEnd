@@ -54,7 +54,7 @@ function readBookings(req, res) {
 function updateBooking(req, res) {
     let sqlQuery = `UPDATE booking SET fullname = '${req.body.fullname}', email = '${req.body.email}', no_adult = ${req.body.no_adult}, no_child = ${req.body.no_child}, no_concession = ${req.body.no_concession} WHERE id = ${req.body.id};`;
     db.query(sqlQuery, (err, results) => {
-        console.log(results);
+        // console.log(results);
     });
     res.end();
 }
@@ -62,7 +62,40 @@ function updateBooking(req, res) {
 function deleteBooking(req, res) {
     let sqlQuery = `DELETE FROM booking WHERE id = ${req.body.id}`;
     db.query(sqlQuery, (err, results) => {
-        console.log(results);
+        // console.log(results);
+    });
+    res.end();
+}
+
+// --- Posts ---
+function addPost(req, res) {
+    let sqlQuery = `INSERT INTO post(movie_id, title, body, rating, fullname) VALUES (${req.body.movie_id}, '${req.body.title}', '${req.body.body}', ${req.body.rating}, '${req.body.fullname}');`;
+    db.query(sqlQuery, (err, results) => {
+        // console.log(results);
+    });
+    res.end();
+}
+
+function readPosts(req, res) {
+    let sqlQuery = "SELECT * FROM post;";
+    db.query(sqlQuery, (err, results) => {
+        // console.log(results);
+        res.json(results);
+    });
+}
+
+function updatePost(req, res) {
+    let sqlQuery = `UPDATE booking SET movie_id = ${req.body.movie_id}, title = '${req.body.title}', body = '${req.body.body}', rating = ${req.body.rating}, fullname = '${req.body.fullname}', WHERE id = ${req.body.id};`;
+    db.query(sqlQuery, (err, results) => {
+        // console.log(results);
+    });
+    res.end();
+}
+
+function deletePost(req, res) {
+    let sqlQuery = `DELETE FROM booking WHERE id = ${req.body.id}`;
+    db.query(sqlQuery, (err, results) => {
+        // console.log(results);
     });
     res.end();
 }
@@ -75,19 +108,31 @@ app.use(startList, cors());
 
 
 
-
 // --- Bookings ---
 // Create
-app.post("/bookings/create", addBooking);
+app.post("/booking/create", addBooking);
 
 // Read
-app.get("/bookings/read", readBookings);
+app.get("/booking/read", readBookings);
 
 // Update
-app.put("/bookings/update", updateBooking);
+app.put("/booking/update", updateBooking);
 
 // Delete
-app.delete("/bookings/delete", deleteBooking);
+app.delete("/booking/delete", deleteBooking);
+
+// --- Posts ---
+// Create
+app.post("/post/create", addPost);
+
+// Read
+app.get("/post/read", readPosts);
+
+// Update
+app.put("/post/update", updatePost);
+
+// Delete
+app.delete("/post/delete", deletePost);
 
 
 
