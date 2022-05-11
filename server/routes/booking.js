@@ -1,5 +1,6 @@
 const express = require("express");
 const mysql = require("mysql");
+const createError = require("http-errors");
 const {database} = require("../config.json");
 
 const router = express.Router();
@@ -19,6 +20,21 @@ function create({body}, res, next) {
         // console.log(err);
         if(err) return next(err);
         return res.status(201).send("Booking Created");
+    });
+}
+
+function readID({params}, res, next) {
+    const id = params.id;
+    if (!id) return next(createError(400, `Missing request id!`));
+    if(typeof(id) !== "number") return next();
+
+    let sqlQuery = "SELECT * FROM booking WHERE id = ?;";
+    let read = [id];
+    db.query(sqlQuery, read, (err, results) => {
+        // console.log(results);
+        // console.log(err);
+        if(err) return next(err);
+        return res.json(results);
     });
 }
 
@@ -58,6 +74,7 @@ function del({params}, res, next) {
         // console.log(results);
         // console.log(err);
         if(err) return next(err);
+        if(results.affectedRows !== 1) return next(createError(400, "Email not deleted, id may not exist in database"));
         return res.status(204).send("Booking Deleted");
     });
 }
@@ -68,6 +85,7 @@ function del({params}, res, next) {
 router.post("/create", create);
 
 // Read
+router.get("/read/:id", readID);
 router.get("/read", readAll);
 
 // Update
