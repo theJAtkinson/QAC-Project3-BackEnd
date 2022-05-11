@@ -12,8 +12,8 @@ db.connect();
 function create({body}, res, next) {
     if(!body) return next(createError(400, "Missing request body"));
 
-    let sqlQuery = `INSERT INTO booking(fullname, email, no_adult, no_child, no_concession) VALUES (?, ?, ?, ?, ?);`;
-    let create = [body.fullname, body.email, body.no_adult, body.no_child, body.no_concession];
+    let sqlQuery = `INSERT INTO booking(fullname, email, no_adult, no_child, no_concession, screening_id) VALUES (?, ?, ?, ?, ?, ?);`;
+    let create = [body.fullname, body.email, body.no_adult, body.no_child, body.no_concession, body.screening_id];
 
     db.query(sqlQuery, create, (err, results) => {
         // console.log(results);
