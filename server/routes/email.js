@@ -3,14 +3,15 @@ const mysql = require("mysql");
 const {database} = require("../config.json");
 
 const router = express.Router();
-const db = mysql.createConnection(config.database);
+const db = mysql.createConnection(database);
 db.connect();
 
 // --- Functions --- 
 
-function create(req, res) {
-    let sqlQuery = `INSERT INTO email_form(fullname, title, body, email) VALUES ('${req.body.fullname}', '${req.body.title}', '${req.body.body}', '${req.body.email}');`;
-    db.query(sqlQuery, (err, results) => {
+function create({body}, res) {
+    let sqlQuery = `INSERT INTO email_form(fullname, title, body, email) VALUES ('?', '?', '?', '?');`;
+    let create = [body.fullname, body.title, body.body, body.email];
+    db.query(sqlQuery, create, (err, results) => {
         // console.log(results);
         // console.log(err);
     });
@@ -26,18 +27,20 @@ function readAll(req, res) {
     });
 }
 
-function update(req, res) {
-    let sqlQuery = `UPDATE email_form SET fullname = '${req.body.fullname}', title = '${req.body.title}', body = '${req.body.body}', email = '${req.body.email}' WHERE id = ${req.params.id};`;
-    db.query(sqlQuery, (err, results) => {
+function update({body, params}, res) {
+    let sqlQuery = `UPDATE email_form SET fullname = '?', title = '?', body = '?', email = '?' WHERE id = ?;`;
+    let update = [body.fullname, body.title, body.body, body.email, params.id];
+    db.query(sqlQuery, update, (err, results) => {
         // console.log(results);
         // console.log(err);
     });
     res.end();
 }
 
-function del(req, res) {
-    let sqlQuery = `DELETE FROM email_form WHERE id = ${req.params.id}`;
-    db.query(sqlQuery, (err, results) => {
+function del({params}, res) {
+    let sqlQuery = `DELETE FROM email_form WHERE id = ?`;
+    let del = [params.id];
+    db.query(sqlQuery, del, (err, results) => {
         // console.log(results);
         // console.log(err);
     });
