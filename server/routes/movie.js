@@ -8,11 +8,11 @@ const db = mysql.createConnection(database);
 db.connect();
 
 // --- Functions --- 
-function create(req,res,next){
+function create({body},res,next){
     let sqlQuery = `INSERT INTO movie (movie_name, director, actors, img, classification) 
-                    VALUES ('${req.body.movie_name}', '${req.body.director}', '${req.body.actors}',
-                    '${req.body.img}', '${req.body.classification}');`;
-    db.query(sqlQuery, (err, results) => {
+                    VALUES (?, ?, ?, ?, ?);`;
+    let values = [body.movie_name, body.director, body.actors, body.img, body.classification]
+    db.query(sqlQuery, values, (err, results) => {
         console.log(results);
     });
     res.end();
@@ -26,19 +26,22 @@ function readAll(req,res,next){
     });
 }
 
-function update(req,res,next){
-    let sqlQuery = `UPDATE movie SET movie_name = '${req.body.movie_name}', director = '${req.body.director}', actors = '${req.body.actors}', img = '${req.body.img}', classification = '${req.body.classification}' WHERE id = ${req.params.id}; `;
+function update({body, params},res,next){
+    let sqlQuery = `UPDATE movie SET movie_name = ?, director = ?, actors = ?, img = ?, classification = ? WHERE id = ?; `;
 
-    db.query(sqlQuery, (err, results) => {
+    let values = [body.movie_name, body.director, body.actors, body.img, body.classification, params.id]
+
+    db.query(sqlQuery, values, (err, results) => {
         console.log(results);
         console.log(err);
     });
     res.end();
 }
 
-function del(req,res,next){
-    let sqlQuery = `DELETE from movie WHERE id = ${req.params.id}`
-    db.query(sqlQuery, (err,results) => {
+function del({params},res,next){
+    let sqlQuery = `DELETE from movie WHERE id = ?`
+    let value = [params.id]
+    db.query(sqlQuery, value, (err,results) => {
         console.log(results);
     });
     res.end();
