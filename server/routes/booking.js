@@ -52,8 +52,8 @@ function update({body, params}, res, next) {
     const id = params.id;
     if (!id) return next(createError(400, `Missing request id!`));
 
-    let sqlQuery = `UPDATE booking SET fullname = ?, email = ?, no_adult = ?, no_child = ?, no_concession = ? WHERE id = ?;`;
-    let update = [body.fullname, body.email, body.no_adult, body.no_child, body.no_concession, id];
+    let sqlQuery = `UPDATE booking SET fullname = ?, email = ?, no_adult = ?, no_child = ?, no_concession = ?, screening_id = ? WHERE id = ?;`;
+    let update = [body.fullname, body.email, body.no_adult, body.no_child, body.no_concession, body.screening_id, id];
 
     db.query(sqlQuery, update, (err, results) => {
         // console.log(results);
