@@ -9,42 +9,56 @@ db.connect();
 // --- Functions --- 
 
 function create({body}, res) {
-    let sqlQuery = `INSERT INTO email_form(fullname, title, body, email) VALUES ('?', '?', '?', '?');`;
+    if(!body) return next(createError(400, "Missing request body"));
+
+    let sqlQuery = `INSERT INTO email_form(fullname, title, body, email) VALUES (?, ?, ?, ?);`;
     let create = [body.fullname, body.title, body.body, body.email];
+
     db.query(sqlQuery, create, (err, results) => {
         // console.log(results);
         // console.log(err);
+        if(err) return next(err);
+        return res.status(201).send("Email Created");
     });
-    res.end();
 }
 
 function readAll(req, res) {
     let sqlQuery = "SELECT * FROM email_form;";
     db.query(sqlQuery, (err, results) => {
         // console.log(results);
-        // console.log(err);
-        res.json(results);
+        // console.log(err);/
+        if(err) return next(err);
+        return res.json(results);
     });
 }
 
 function update({body, params}, res) {
-    let sqlQuery = `UPDATE email_form SET fullname = '?', title = '?', body = '?', email = '?' WHERE id = ?;`;
-    let update = [body.fullname, body.title, body.body, body.email, params.id];
+    const id = params.id;
+    if (!id) return next(createError(400, `Missing request id!`));
+
+    let sqlQuery = `UPDATE email_form SET fullname = ?, title = ?, body = ?, email = ? WHERE id = ?;`;
+    let update = [body.fullname, body.title, body.body, body.email, id];
     db.query(sqlQuery, update, (err, results) => {
         // console.log(results);
         // console.log(err);
+        if(err) return next(err);
+        return res.status(204).send("Email Created");
     });
-    res.end();
 }
 
 function del({params}, res) {
+    const id = params.id;
+    if(!id) return next(createError(400, "Missing request id!"));
+
     let sqlQuery = `DELETE FROM email_form WHERE id = ?`;
-    let del = [params.id];
+    let del = [id];
+
     db.query(sqlQuery, del, (err, results) => {
         // console.log(results);
         // console.log(err);
+        if(err) return next(err);
+        return res.status(204).send("Post Deleted");
     });
-    res.end();
 }
 
 // --- End Points ---

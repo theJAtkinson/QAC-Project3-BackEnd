@@ -9,13 +9,17 @@ db.connect();
 // --- Functions ---
  
 function create({body}, res) {
-    let sqlQuery = `INSERT INTO post(movie_id, title, body, rating, fullname) VALUES (?, '?', '?', ?, '?');`;
+    if(!body) return next(createError(400, "Missing request body"));
+
+    let sqlQuery = `INSERT INTO post(movie_id, title, body, rating, fullname) VALUES (?, ?, ?, ?, ?);`;
     let create = [body.movie_id, body.title, body.body, body.rating, body.fullname];
+
     db.query(sqlQuery, create, (err, results) => {
         // console.log(results);
         // console.log(err);
+        if(err) return next(err);
+        return res.status(201).send("Post Created");
     });
-    res.end();
 }
 
 function readAll(req, res) {
@@ -23,28 +27,39 @@ function readAll(req, res) {
     db.query(sqlQuery, (err, results) => {
         // console.log(results);
         // console.log(err);
-        res.json(results);
+        if(err) return next(err);
+        return res.json(results);
     });
 }
 
 function update({body, params}, res) {
-    let sqlQuery = `UPDATE post SET movie_id = ?, title = '?', body = '?', rating = ?, fullname = '?' WHERE id = ?;`;
-    let update = [body.movie_id, body.title, body.body, body.rating, body.fullname, params.id];
+    const id = params.id;
+    if (!id) return next(createError(400, `Missing request id!`));
+
+    let sqlQuery = `UPDATE post SET movie_id = ?, title = ?, body = ?, rating = ?, fullname = ? WHERE id = ?;`;
+    let update = [body.movie_id, body.title, body.body, body.rating, body.fullname, id];
+
     db.query(sqlQuery, update, (err, results) => {
         // console.log(results);
         // console.log(err);
+        if(err) return next(err);
+        return res.status(204).send("Post Updateded");
     });
-    res.end();
 }
 
 function del({params}, res) {
+    const id = params.id;
+    if(!id) return next(createError(400, "Missing request id!"));
+
     let sqlQuery = `DELETE FROM post WHERE id = ?`;
-    let del = [params.id];
-    db.query(sqlQuery, (err, results) => {
+    let del = [id];
+
+    db.query(sqlQuery, del, (err, results) => {
         // console.log(results);
         // console.log(err);
+        if(err) return next(err);
+        return res.status(204).send("Post Deleted");
     });
-    res.end();
 }
 
 // --- End Points ---

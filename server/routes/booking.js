@@ -11,7 +11,7 @@ db.connect();
 function create({body}, res, next) {
     if(!body) return next(createError(400, "Missing request body"));
 
-    let sqlQuery = `INSERT INTO booking(fullname, email, no_adult, no_child, no_concession) VALUES ('?', '?', ?, ?, ?);`;
+    let sqlQuery = `INSERT INTO booking(fullname, email, no_adult, no_child, no_concession) VALUES (?, ?, ?, ?, ?);`;
     let create = [body.fullname, body.email, body.no_adult, body.no_child, body.no_concession];
 
     db.query(sqlQuery, create, (err, results) => {
@@ -34,22 +34,22 @@ function readAll(req, res, next) {
 
 function update({body, params}, res, next) {
     const id = params.id;
-    if (!id) return next(createError(400, `No booking found with id ${id}`));
+    if (!id) return next(createError(400, `Missing request id!`));
 
-    let sqlQuery = `UPDATE booking SET fullname = '?', email = '?', no_adult = ?, no_child = ?, no_concession = ? WHERE id = ?;`;
+    let sqlQuery = `UPDATE booking SET fullname = ?, email = ?, no_adult = ?, no_child = ?, no_concession = ? WHERE id = ?;`;
     let update = [body.fullname, body.email, body.no_adult, body.no_child, body.no_concession, id];
 
     db.query(sqlQuery, update, (err, results) => {
         // console.log(results);
         // console.log(err);
         if(err) return next(err);
-        return res.status(204).send("Booking Created");
+        return res.status(204).send("Booking Updated");
     });
 }
 
 function del({params}, res, next) {
     const id = params.id;
-    if(!id) return next(createError(400, "Missing id"));
+    if(!id) return next(createError(400, "Missing request id!"));
 
     let sqlQuery = `DELETE FROM booking WHERE id = ?;`;
     let del = [id];
