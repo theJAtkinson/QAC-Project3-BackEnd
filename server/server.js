@@ -4,7 +4,7 @@ const cors = require("cors");
 const movieRoutes = require('./routes/movie.js');
 const screeningRoutes = require('./routes/movie.js');
 const bookingRoutes = require("./routes/booking.js");
-const postRoutes = require("./routes/posts.js");
+const postRoutes = require("./routes/post.js");
 const emailRoutes = require('./routes/email.js');
 
 let app = express();
