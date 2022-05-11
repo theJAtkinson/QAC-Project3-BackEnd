@@ -55,9 +55,10 @@ function update({body, params}, res, next) {
     let sqlQuery = `UPDATE email_form SET fullname = ?, title = ?, body = ?, email = ? WHERE id = ?;`;
     let update = [body.fullname, body.title, body.body, body.email, id];
     db.query(sqlQuery, update, (err, results) => {
-        // console.log(results);
-        // console.log(err);
+        console.log(results);
+        console.log(err);
         if(err) return next(err);
+        if(results.affectedRows !== 1) return next(createError(400, "Email not updated, id may not exist in database"));
         return res.status(204).send("Email Created");
     });
 }

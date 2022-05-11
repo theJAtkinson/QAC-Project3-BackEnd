@@ -60,6 +60,7 @@ function update({body, params}, res, next) {
         // console.log(results);
         // console.log(err);
         if(err) return next(err);
+        if(results.affectedRows !== 1) return next(createError(400, "Post not updated, id may not exist in database"));
         return res.status(204).send("Post Updateded");
     });
 }
@@ -75,7 +76,7 @@ function del({params}, res, next) {
         // console.log(results);
         // console.log(err);
         if(err) return next(err);
-        if(results.affectedRows !== 1) return next(createError(400, "Email not deleted, id may not exist in database"));
+        if(results.affectedRows !== 1) return next(createError(400, "Post not deleted, id may not exist in database"));
         return res.status(204).send("Post Deleted");
     });
 }
