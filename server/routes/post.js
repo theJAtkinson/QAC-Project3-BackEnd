@@ -11,9 +11,11 @@ db.connect();
  
 function create({body}, res, next) {
     if(!body) return next(createError(400, "Missing request body"));
+    const movie_id = body.movie_id;
+    if(!movie_id) return next(createError(400, "Missing movie_id"));
 
     let sqlQuery = `INSERT INTO post(movie_id, title, body, rating, fullname) VALUES (?, ?, ?, ?, ?);`;
-    let create = [body.movie_id, body.title, body.body, body.rating, body.fullname];
+    let create = [movie_id, body.title, body.body, body.rating, body.fullname];
 
     db.query(sqlQuery, create, (err, results) => {
         // console.log(results);
@@ -52,9 +54,11 @@ function readID({params}, res, next) {
 function update({body, params}, res, next) {
     const id = params.id;
     if(!id) return next(createError(400, `Missing request id!`));
+    const movie_id = body.movie_id;
+    if(!movie_id) return next(createError(400, "Missing movie_id"));
 
     let sqlQuery = `UPDATE post SET movie_id = ?, title = ?, body = ?, rating = ?, fullname = ? WHERE id = ?;`;
-    let update = [body.movie_id, body.title, body.body, body.rating, body.fullname, id];
+    let update = [movie_id, body.title, body.body, body.rating, body.fullname, id];
 
     db.query(sqlQuery, update, (err, results) => {
         // console.log(results);
