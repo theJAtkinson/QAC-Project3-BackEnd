@@ -10,11 +10,14 @@ db.connect();
 
 // --- Functions --- 
 function create({body},res,next){
+    const movie_id = body.movie_id;
+    if(!movie_id) return next(createError(400, "Missing Movie ID"));
+
     let sqlQuery = `INSERT INTO screening (screen, movie_id, show_date, show_time) 
                     VALUES (?, ?, ?, ?);`;
-    let values = [body.screen, body.movie_id, body.show_date, body.show_time]
+    let values = [body.screen, movie_id, body.show_date, body.show_time]
     db.query(sqlQuery, values, (err, results) => {
-        console.log(results);
+        // console.log(results);
     });
     res.end();
 }
@@ -22,17 +25,20 @@ function create({body},res,next){
 function readAll(req,res,next){
     let sqlQuery = `SELECT * FROM screening`
     db.query(sqlQuery, (err, results) => {
-        console.log(results);
+        // console.log(results);
         res.json(results);
     });
 }
 
 function update({body, params},res,next){
-    let sqlQuery = `UPDATE screening SET screen = ?, movie_id = ?, show_date = ?, show_time = ?, WHERE id = ?; `;
+    const movie_id = body.movie_id;
+    if(!movie_id) return next(createError(400, "Missing Movie ID"));
 
-    let values = [body.screen, body.movie_id, body.show_date, body.show_time, params.id]
-    db.query(sqlQuery, (err, results) => {
-        console.log(results);
+    let sqlQuery = `UPDATE screening SET screen = ?, movie_id = ?, show_date = ?, show_time = ?, WHERE id = ?; `;
+    let values = [body.screen, movie_id, body.show_date, body.show_time, params.id]
+
+    db.query(sqlQuery, values, (err, results) => {
+        // console.log(results);
     });
     res.end();
 }
@@ -41,7 +47,7 @@ function del({params},res,next){
     let sqlQuery = `DELETE from screening WHERE id = ?`
     let value = [params.id]
     db.query(sqlQuery, value, (err,results) => {
-        console.log(results);
+        // console.log(results);
     });
     res.end();
 }
