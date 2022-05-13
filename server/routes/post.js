@@ -25,8 +25,8 @@ function create({body}, res, next) {
     });
 }
 
-function readAll(req, res, next) {
-    let sqlQuery = "SELECT * FROM post;";
+function read(req, res, next) {
+    let sqlQuery = "SELECT m.movie_name, p.title, p.body, p.rating, p.fullname FROM post AS p JOIN movie AS m ON p.movie_id = m.id;";
     db.query(sqlQuery, (err, results) => {
         // console.log(results);
         // console.log(err);
@@ -92,7 +92,7 @@ router.post("/create", create);
 
 // Read
 router.get("/read/:id", readID);
-router.get("/read", readAll);
+router.get("/read", read);
 
 // Update
 router.put("/update/:id", update);
