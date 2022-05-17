@@ -14,17 +14,51 @@ function create({body},res,next){
                     VALUES (?, ?, ?, ?, ?);`;
     let values = [body.movie_name, body.director, body.actors, body.img, body.classification]
     db.query(sqlQuery, values, (err, results) => {
-        console.log(results);
+        // console.log(results);
     });
     res.end();
 }
 
-function readAll(req,res,next){
-    let sqlQuery = `SELECT * FROM movie`
-    db.query(sqlQuery, (err, results) => {
-        console.log(results);
+function readNameScreenings({params},res, next){
+    const movie_name = params.movie_name;
+    if (!movie_name) return next(createError(400, `Missing request name!`));
+
+    let sqlQuery = "SELECT m.id AS movie_id, m.movie_name, s.id AS screening_id, s.screen, s.show_date, s.show_time FROM movie AS m JOIN screening AS s ON m.id = s.movie_id WHERE m.movie_name = ?;";
+    let read = [movie_name];
+
+    db.query(sqlQuery, read, (err, results) => {
+        // console.log(results);
         res.json(results);
     });
+}
+
+function readAll(req,res){
+    let sqlQuery = `SELECT * FROM movie`
+    db.query(sqlQuery, (err, results) => {
+        // console.log(results);
+        res.json(results);
+    });
+}
+
+function readById(req, res, next){
+    let sqlQuery = `SELECT * FROM movie WHERE id=?`
+    let id = [parseInt(req.params.id)]
+
+    db.query(sqlQuery,id,(err, results) =>{
+        if (err) return next({status:400, message:err.message});
+        return res.json(results);
+    })
+}
+
+function searchMovie(req,res,next){
+    const searchText = `%${req.params.bloop}%`
+    let sqlQuery = `SELECT * FROM movie WHERE movie_name LIKE(?) OR director LIKE(?) OR actors LIKE(?)`
+    let read = [searchText, searchText, searchText]
+
+    db.query(sqlQuery, read, (err, results) =>{
+        if (err) return next({status:400, message:err.message});
+        return res.json(results);
+    })
 }
 
 function update({body, params},res,next){
@@ -33,8 +67,8 @@ function update({body, params},res,next){
     let values = [body.movie_name, body.director, body.actors, body.img, body.classification, params.id]
 
     db.query(sqlQuery, values, (err, results) => {
-        console.log(results);
-        console.log(err);
+        // console.log(results);
+        // console.log(err);
     });
     res.end();
 }
@@ -45,6 +79,7 @@ function del({params},res,next){
     db.query(sqlQuery, value, (err,results) => {
         if(err) return next({status:400, message:err.message});
         return res.status(204).send();
+
     });
     
 }
@@ -55,7 +90,13 @@ function del({params},res,next){
 router.post("/create", create);
 
 // Read
+router.get("/read/screening/:movie_name", readNameScreenings);
 router.get("/read", readAll);
+router.get("/read/:id", readById);
+
+// Search
+router.get("/searchMovie/:bloop", searchMovie)
+
 
 // Update
 router.put("/update/:id", update);

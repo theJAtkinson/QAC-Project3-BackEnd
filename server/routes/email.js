@@ -12,6 +12,8 @@ db.connect();
 function create({body}, res, next) {
     if(!body) return next(createError(400, "Missing request body"));
 
+    console.log(body);
+    
     let sqlQuery = `INSERT INTO email_form(fullname, title, body, email) VALUES (?, ?, ?, ?);`;
     let create = [body.fullname, body.title, body.body, body.email];
 

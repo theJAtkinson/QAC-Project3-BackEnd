@@ -2,7 +2,7 @@
     "database": {
         "host": "localhost",
         "user": "root",
-        "password": "Amana4dm1n*",
+        "password": "pass",
         "database": "cinema"
     }
 }

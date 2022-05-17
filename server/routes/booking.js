@@ -11,9 +11,15 @@ db.connect();
 
 function create({body}, res, next) {
     if(!body) return next(createError(400, "Missing request body"));
-
+    const screening_id = body.screening_id;
+    if(!screening_id) return next(createError(400, "Missing a screening_id"));
+    
     let sqlQuery = `INSERT INTO booking(fullname, email, no_adult, no_child, no_concession, screening_id) VALUES (?, ?, ?, ?, ?, ?);`;
-    let create = [body.fullname, body.email, body.no_adult, body.no_child, body.no_concession, body.screening_id];
+
+    if(!body.no_child){body.no_child = 0}
+    if(!body.no_adult){body.no_adult = 0}
+    if(!body.no_concession){body.no_concession = 0}
+    let create = [body.fullname, body.email, body.no_adult, body.no_child, body.no_concession, screening_id];
 
     db.query(sqlQuery, create, (err, results) => {
         // console.log(results);
@@ -53,6 +59,10 @@ function update({body, params}, res, next) {
     if (!id) return next(createError(400, `Missing request id!`));
 
     let sqlQuery = `UPDATE booking SET fullname = ?, email = ?, no_adult = ?, no_child = ?, no_concession = ?, screening_id = ? WHERE id = ?;`;
+
+    if(!body.no_child){body.no_child = 0}
+    if(!body.no_adult){body.no_adult = 0}
+    if(!body.no_concession){body.no_concession = 0}
     let update = [body.fullname, body.email, body.no_adult, body.no_child, body.no_concession, body.screening_id, id];
 
     db.query(sqlQuery, update, (err, results) => {
