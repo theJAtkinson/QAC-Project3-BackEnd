@@ -77,9 +77,11 @@ function del({params},res,next){
     let sqlQuery = `DELETE from movie WHERE id = ?`
     let value = [params.id]
     db.query(sqlQuery, value, (err,results) => {
-        // console.log(results);
+        if(err) return next({status:400, message:err.message});
+        return res.status(204).send();
+
     });
-    res.end();
+    
 }
 
 // --- End Points ---
