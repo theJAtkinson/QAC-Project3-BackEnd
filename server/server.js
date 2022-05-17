@@ -36,15 +36,15 @@ app.use("/booking", bookingRoutes);
 app.use("/post", postRoutes);
 app.use("/email", emailRoutes);
 
+// - Failed endpoints -
+app.use("*",(req, res, next) => next({status:404, message: "End Point Doesn't exist, or code is bad :)"}));
 
 // -- Error Handling --
 app.use(({status, message}, req, res, next) => {
-    if(!status) return next();
+    if(!status) return res.send(message);
     return res.status(status).send(message);
 });
 
-// - Failed endpoints -
-app.use((req, res) => res.status(404).send("End Point Doesn't exist, or code is bad :)"));
 
 app.listen(4005, () => {
     console.log("-- Server Listening ---");

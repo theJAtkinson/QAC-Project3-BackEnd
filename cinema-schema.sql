@@ -66,6 +66,10 @@ INSERT INTO movie (movie_name, director, actors, img, classification) VALUES
 ('Doctor Strange in the Multiverse of Madness', 'Sam Raimi', 'Benedict Cumberbatch, Elizabeth Olsen, Chiwetel Ejiofor, Benedict Wong', 'https://m.media-amazon.com/images/M/MV5BNWM0ZGJlMzMtZmYwMi00NzI3LTgzMzMtNjMzNjliNDRmZmFlXkEyXkFqcGdeQXVyMTM1MTE1NDMx._V1_UY1200_CR90,0,630,1200_AL_.jpg', 'PG-13'),
 ('The Godfather', 'Francis Ford Coppola','Marlon Brando, Al Pacino, James Caan', 'https://m.media-amazon.com/images/M/MV5BM2MyNjYxNmUtYTAwNi00MTYxLWJmNWYtYzZlODY3ZTk3OTFlXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_.jpg', '15'),
 ('The Incredibles', 'Brad Bird','Craig T. Nelson, Samuel L. Jackson, Holly Hunter', 'https://m.media-amazon.com/images/M/MV5BMTY5OTU0OTc2NV5BMl5BanBnXkFtZTcwMzU4MDcyMQ@@._V1_.jpg', 'PG');
+('Jurassic World: Dominion', 'Colin Trevorrow', 'Chris Pratt, Bryce Dallas Howard, Sam Neill, Laura Dern, Jeff Goldblum', 'https://1.bp.blogspot.com/-ohElua6m4aA/XwT_A7ffa8I/AAAAAAAAGLc/j5ciWNxemWw3ddYMBpNxae_lM8rHQ5LqACK4BGAYYCw/s1600/Jurassic-world-DOMINION-poster-Spino-HD.jpg');
+('Encanto', 'Jared Bush', 'Stephanie Beatriz, María Cecilia Botero, John Leguizamo, Mauro Castillo', 'https://xl.movieposterdb.com/22_01/2021/2953050/xl_2953050_296eb960.jpg?v=2022-04-07%2010:57:23', 'PG'),
+('Everything Everywhere All at Once', 'Dan Kwan', 'Michelle Yeoh, Stephanie Hsu, Ke Huy Quan, James Hong', 'https://www.picclickimg.com/d/l400/pict/255466835877_/Everything-Everywhere-All-At-Once-Movie-Poster-24x36.jpg', '15');
+
 
 -- Screenings
 INSERT INTO screening (screen, movie_id, show_date, show_time) VALUES
