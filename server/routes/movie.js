@@ -40,6 +40,17 @@ function readAll(req,res){
     });
 }
 
+function searchMovie(req,res,next){
+    const searchText = `%${req.params.bloop}%`
+    let sqlQuery = `SELECT * FROM movie WHERE movie_name LIKE(?) OR director LIKE(?) OR actors LIKE(?)`
+    let read = [searchText, searchText, searchText]
+
+    db.query(sqlQuery, read, (err, results) =>{
+        if (err) return next({status:400, message:err.message});
+        return res.json(results);
+    })
+}
+
 function update({body, params},res,next){
     let sqlQuery = `UPDATE movie SET movie_name = ?, director = ?, actors = ?, img = ?, classification = ? WHERE id = ?; `;
 
@@ -69,6 +80,10 @@ router.post("/create", create);
 // Read
 router.get("/read/screening/:movie_name", readNameScreenings);
 router.get("/read", readAll);
+
+// Search
+router.get("/searchMovie/:bloop", searchMovie)
+
 
 // Update
 router.put("/update/:id", update);

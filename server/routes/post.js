@@ -26,7 +26,7 @@ function create({body}, res, next) {
 }
 
 function read(req, res, next) {
-    let sqlQuery = "SELECT m.movie_name, p.title, p.body, p.rating, p.fullname FROM post AS p JOIN movie AS m ON p.movie_id = m.id;";
+    let sqlQuery = "SELECT p.id, m.movie_name, p.title, p.body, p.rating, p.fullname FROM post AS p JOIN movie AS m ON p.movie_id = m.id;";
     db.query(sqlQuery, (err, results) => {
         // console.log(results);
         // console.log(err);
