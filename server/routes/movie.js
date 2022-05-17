@@ -40,6 +40,16 @@ function readAll(req,res){
     });
 }
 
+function readById(req, res){
+    let sqlQuery = `SELECT * FROM movie WHERE id=?`
+    let id = [parseInt(req.params.id)]
+
+    db.query(sqlQuery,id,(err, results) =>{
+        if (err) return next({status:400, message:err.message});
+        return res.json(results);
+    })
+}
+
 function searchMovie(req,res,next){
     const searchText = `%${req.params.bloop}%`
     let sqlQuery = `SELECT * FROM movie WHERE movie_name LIKE(?) OR director LIKE(?) OR actors LIKE(?)`
@@ -80,6 +90,7 @@ router.post("/create", create);
 // Read
 router.get("/read/screening/:movie_name", readNameScreenings);
 router.get("/read", readAll);
+router.get("/read/:id", readById);
 
 // Search
 router.get("/searchMovie/:bloop", searchMovie)
