@@ -40,7 +40,7 @@ function readAll(req,res){
     });
 }
 
-function readById(req, res){
+function readById(req, res, next){
     let sqlQuery = `SELECT * FROM movie WHERE id=?`
     let id = [parseInt(req.params.id)]
 
