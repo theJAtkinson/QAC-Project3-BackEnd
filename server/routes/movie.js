@@ -1,9 +1,7 @@
 const express = require("express");
 const mysql = require("mysql");
 const createError = require("http-errors");
-const {database} = require("../config.json");
-
-
+const {database} = require("../config.js");
 const router = express.Router();
 const db = mysql.createConnection(database);
 db.connect();
@@ -14,9 +12,9 @@ function create({body},res,next){
                     VALUES (?, ?, ?, ?, ?);`;
     let values = [body.movie_name, body.director, body.actors, body.img, body.classification]
     db.query(sqlQuery, values, (err, results) => {
-        // console.log(results);
+        if(err) return next(err);
+        return res.status(201).send("Movie Created");
     });
-    res.end();
 }
 
 function readNameScreenings({params},res, next){
@@ -28,7 +26,8 @@ function readNameScreenings({params},res, next){
 
     db.query(sqlQuery, read, (err, results) => {
         // console.log(results);
-        res.json(results);
+        if(err) return next(err);
+        return res.json(results);
     });
 }
 
@@ -47,7 +46,7 @@ function readById(req, res, next){
     db.query(sqlQuery,id,(err, results) =>{
         if (err) return next({status:400, message:err.message});
         return res.json(results);
-    })
+    });
 }
 
 function searchMovie(req,res,next){
@@ -58,7 +57,7 @@ function searchMovie(req,res,next){
     db.query(sqlQuery, read, (err, results) =>{
         if (err) return next({status:400, message:err.message});
         return res.json(results);
-    })
+    });
 }
 
 function update({body, params},res,next){
@@ -69,8 +68,10 @@ function update({body, params},res,next){
     db.query(sqlQuery, values, (err, results) => {
         // console.log(results);
         // console.log(err);
+        if(err) return next(err);
+        if(results.affectedRows !== 1) return next(createError(400, "Movie not updated, id may not exist in database"));
+        return res.status(204).send("Movie Updateded");
     });
-    res.end();
 }
 
 function del({params},res,next){
@@ -79,9 +80,7 @@ function del({params},res,next){
     db.query(sqlQuery, value, (err,results) => {
         if(err) return next({status:400, message:err.message});
         return res.status(204).send();
-
-    });
-    
+    });  
 }
 
 // --- End Points ---
@@ -95,7 +94,7 @@ router.get("/read", readAll);
 router.get("/read/:id", readById);
 
 // Search
-router.get("/searchMovie/:bloop", searchMovie)
+router.get("/searchMovie/:bloop", searchMovie);
 
 
 // Update

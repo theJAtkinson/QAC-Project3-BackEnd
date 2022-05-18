@@ -1,7 +1,7 @@
 const express = require("express");
 const mysql = require("mysql");
 const createError = require("http-errors");
-const {database} = require("../config.json");
+const {database} = require("../config.js");
 
 const router = express.Router();
 const db = mysql.createConnection(database);
@@ -28,7 +28,6 @@ function create({body}, res, next) {
 function readID({params}, res, next) {
     const id = params.id;
     if (!id) return next(createError(400, `Missing request id!`));
-    if(typeof(id) !== "number") return next();
 
     let sqlQuery = "SELECT * FROM email_form WHERE id = ?;";
     let read = [id];
