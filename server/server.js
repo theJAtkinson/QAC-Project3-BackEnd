@@ -46,7 +46,9 @@ app.use(({status, message}, req, res, next) => {
 });
 
 
-const server = app.listen(4005, () => {
+const server = app.listen((4005), () => {
     console.log("-- Server Listening ---");
     console.log("port: ", server.address().port);
 });
+
+module.exports = app;
