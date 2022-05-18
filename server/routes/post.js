@@ -38,7 +38,6 @@ function read(req, res, next) {
 function readID({params}, res, next) {
     const id = params.id;
     if(!id) return next(createError(400, `Missing request id!`));
-    if(typeof(id) !== "number") return next();
 
     let sqlQuery = "SELECT * FROM post WHERE id = ?;";
     let read = [id];
