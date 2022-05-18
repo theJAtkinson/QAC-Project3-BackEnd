@@ -9,7 +9,7 @@ const server = require("../server.js")
 
 chai.use(chaiHttp);
 
-describe("CRUD route testing for Bookings", () => {
+describe("CRUD route testing for Emails", () => {
     beforeEach((done) => {
         const db = mysql.createConnection(database);
         db.connect();
@@ -22,35 +22,31 @@ describe("CRUD route testing for Bookings", () => {
         });
     });
 
-    it('should create a booking', (done) => {
-        chai.request(server).post('/booking/create').send({
-            "fullname": "Sdsfds",
-            "email": "test@test.com",
-            "no_adult": 1,
-            "no_child": 5,
-            "no_concession": 2,
-            "screening_id": 1
+    it('should create a email', (done) => {
+        chai.request(server).post('/email/create').send({
+                "fullname": "test",
+                "title": "test",
+                "body": "test",
+                "email": "test"
         }).end((err, res) => {
             expect(err).to.be.null;
             expect(res.status).to.equal(201);
-            expect(res.text).to.equal("Booking Created");
+            expect(res.text).to.equal("Email Created");
             return done();
         });
     });
 
-    it("should read all bookings", (done) => {
-        chai.request(server).get('/booking/read').end((err, res) => {
+    it("should read all emails", (done) => {
+        chai.request(server).get('/email/read').end((err, res) => {
             expect(err).to.be.null;
             expect(res.status).to.equal(200);
             expect(res.body).to.deep.equal([
                 {
                     "id": 1,
-                    "fullname": "Shafeeq",
-                    "email": "shafeeq@shafeeq.com",
-                    "no_adult": 10,
-                    "no_child": 5,
-                    "no_concession": 3,
-                    "screening_id": 1
+                    "fullname": "Jenny Jenkins",
+                    "title": "Huh?",
+                    "body": "How do I use your complicated website?",
+                    "email": null
                 }
             ]);
             return done();
@@ -58,18 +54,16 @@ describe("CRUD route testing for Bookings", () => {
     });
 
     it("should read by Id", (done) => {
-        chai.request(server).get('/booking/read/1').end((err, res) => {
+        chai.request(server).get('/email/read/1').end((err, res) => {
             expect(err).to.be.null;
             expect(res.status).to.equal(200);
             expect(res.body).to.deep.equal([
                 {
                     "id": 1,
-                    "fullname": "Shafeeq",
-                    "email": "shafeeq@shafeeq.com",
-                    "no_adult": 10,
-                    "no_child": 5,
-                    "no_concession": 3,
-                    "screening_id": 1
+                    "fullname": "Jenny Jenkins",
+                    "title": "Huh?",
+                    "body": "How do I use your complicated website?",
+                    "email": null
                 }
             ]);
             return done();
@@ -78,13 +72,11 @@ describe("CRUD route testing for Bookings", () => {
 
 
     it("should update a given entry where id = x", (done) => {
-        chai.request(server).put("/booking/update/1").send({
-            "fullname": "Shafeeq",
-            "email": "the@thr.com",
-            "no_adult": 10,
-            "no_child": 5,
-            "no_concession": 3,
-            "screening_id": 1
+        chai.request(server).put("/email/update/1").send({
+            "fullname": "test2",
+            "title": "test2",
+            "body": "test2",
+            "email": "test"
         }).end((err, res) => {
             expect(err).to.be.null;
             expect(res.status).to.equal(204);
@@ -92,8 +84,8 @@ describe("CRUD route testing for Bookings", () => {
         });
     });
 
-    it("should delete a booking where id = x", (done) => {
-        chai.request(server).del("/booking/delete/1").end((err, res) => {
+    it("should delete an email where id = x", (done) => {
+        chai.request(server).del("/email/delete/1").end((err, res) => {
             expect(err).to.be.null;
             expect(res.status).to.equal(204);
             return done();
