@@ -13,7 +13,7 @@ function create({body},res,next){
     let values = [body.movie_name, body.director, body.actors, body.img, body.classification]
     db.query(sqlQuery, values, (err, results) => {
         if(err) return next(err);
-        return res.status(201).send("Post Created");
+        return res.status(201).send("Movie Created");
     });
 }
 

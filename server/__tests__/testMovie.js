@@ -32,7 +32,7 @@ describe("CRUD route testing for movies", () => {
         }).end((err, res) => {
             expect(err).to.be.null;
             expect(res.status).to.equal(201);
-            expect(res.text).to.equal("Post Created");
+            expect(res.text).to.equal("Movie Created");
             return done();
         });
     });
@@ -118,7 +118,6 @@ describe("CRUD route testing for movies", () => {
             classification: "class"
         }).end((err, res) => {
             expect(err).to.be.null;
-            console.log(res.status, "body", res.body,"text", res.text)
             expect(res.status).to.equal(204);
             return done();
         });
