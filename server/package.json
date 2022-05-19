@@ -49,6 +49,7 @@
     "ms": "^2.0.0",
     "mysql": "^2.18.1",
     "negotiator": "^0.6.3",
+    "nodemon": "^2.0.16",
     "nyc": "^15.1.0",
     "object-assign": "^4.1.1",
     "object-inspect": "^1.12.0",
@@ -78,10 +79,13 @@
     "vary": "^1.1.2"
   },
   "scripts": {
-    "test": "mocha ./__tests__ --exit --reporter=nyan",
-    "start": "node server.js",
+    "test": "cross-env NODE_ENV=test mocha ./__tests__ --exit --reporter=nyan",
+    "start": "cross-env NODE_ENV=development nodemon --exec node server.js",
     "coverage": "nyc npm test"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "cross-env": "^7.0.3"
+  }
 }
