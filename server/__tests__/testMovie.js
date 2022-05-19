@@ -11,6 +11,7 @@ chai.use(chaiHttp);
 
 describe("CRUD route testing for movies", () => {
     beforeEach((done) => {
+        console.log(database);
         const db = mysql.createConnection(database);
         db.connect();
         const path = "../cinema-test-schema.sql";
